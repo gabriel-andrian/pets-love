@@ -1,5 +1,5 @@
 from flask import Flask
-from flask-jwt-extended import JWTManager
+from flask_jwt_extended import JWTManager
 from secrets import token_hex
 from app.views.home import bp_home
 from app.views.owner_views import bp_owner

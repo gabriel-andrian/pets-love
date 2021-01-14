@@ -1,13 +1,18 @@
 from flask import Blueprint, request
 from app.models import db
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.owner_model import Owner, OwnerSchema
 from http import HTTPStatus
 
 bp_owner = Blueprint("api_owner", __name__, url_prefix="/owner")
 
 
-@bp_owner.route("/<int:owner_id>", methods=["PATCH"])
-def update(owner_id: int):
+@bp_owner.route("/", methods=["PATCH"])
+@jwt_required
+def update():
+
+    owner_id = get_jwt_identity()
+
     data = request.get_json()
     owner = Owner.query.get_or_404(owner_id)
 
@@ -24,10 +29,14 @@ def update(owner_id: int):
     return {'data': OwnerSchema().dump(owner)}, HTTPStatus.OK
 
 
-@bp_owner.route("/<int:owner_id>", methods=["DELETE"])
-def delete(owner_id: int):
-    Owner.query.get_or_404(owner_id)
+@bp_owner.route("/", methods=["DELETE"])
+@jwt_required
+def delete():
 
+    owner_id = get_jwt_identity()
+
+    Owner.query.get_or_404(owner_id)
     Owner.query.filter_by(id=owner_id).delete()
+
     db.session.commit()
     return {"msg": f'Dono com id {owner_id} deletado'}, HTTPStatus.OK
