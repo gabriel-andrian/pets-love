@@ -21,3 +21,26 @@ Exemplos de commits:
 - chore: criou,
 - refactor: alterou,
 - fix: corrigiu algum erro,.
+
+## **EndPoints**
+
+### _Owner_
+
+* Update:
+    ```
+    PATCH /owner/<owner_id>
+    {
+        "name": "",
+        "surname": "",
+        "document": "",
+        "email": "",
+        "address": "",
+        "password": ""
+    }
+    # Pode-se atualizar qualquer atributo do owner (um atributo ou mais) deixando-os explícitos no corpo da requisição
+    ```
+
+* Delete:
+    ```
+    DELETE /owner/<owner_id>
+    ```
