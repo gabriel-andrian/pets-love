@@ -1,4 +1,4 @@
-from app.models import db
+from app.models import db, ma
 
 
 class Dog(db.model):
@@ -7,38 +7,31 @@ class Dog(db.model):
     details = db.Column(db.String(1024), nullable=False)
     owner_id = db.Column(db.Integer, db.foreignKey('owner.id'))
     breed_id = db.Column(db.Integer, db.foreignKey('breed.id'))
+    gender = db.Column(db.Boolean, nullable=False)
 
-    photos = db.relationship("DogPhoto", back_populates="dog_photo")
-    give = db.relationship("Like", back_populates="give_b")
-    receive = db.relationship("Like", back_populates="receive_b")
+    # Relationship
+    # photos = db.relationship("DogPhoto", back_populates="dog")
+
+    # gives = db.relationship("Like", back_populates="dog_give")
+    # receives = db.relationship("Like", back_populates="dog_receive")
+
+    # conversations = db.relationship('Conversation',
+    #       back_populates='dog_conversation')
+
+    # messages = db.relationship('Message', back_populates='dog_message')
 
 
-class Like(db.model):
-    id = db.Column(db.Integer, primary_key=True)
-    dog_give_id = db.Column(db.Integer, db.foreignKey('dog.id'))
-    dog_receive_id = db.Column(db.Integer, db.foreignKey('dog.id'))
-
-    give_b = db.relationship("Dog", back_populates="give")
-    receive_b = db.relationship("Dog", back_populates="receive")
+def __repr__(self):
+    return f"<Dog {self.name} />"
 
 
-class DogPhoto(db.model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    dog_id = db.Column(db.Integer, db.foreignKey('dog.id'))
+class DogSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Dog
 
-    dog_photo = db.relationship("Dog", back_populates="photos")
-    # CREATE TABLE dog (
-#    id int NOT NULL AUTO_INCREMENT,
-#    name varchar(64) NOT NULL,
-#    details text NOT NULL,
-#    owner_id int NOT NULL,
-#    breed_id int NOT NULL,
-#    gender bool NOT NULL,
-#    CONSTRAINT dog_pk PRIMARY KEY (id)
-# );
-
-# id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String, unique=False, nullable=False)
-    # surname = db.Column(db.String, unique=False, nullable=True)
-    # document = db.Column(db.String(1024), unique=True, nullable=False)
+    id = ma.auto_field()
+    name = ma.auto_field()
+    details = ma.auto_field()
+    owner_id = ma.auto_field()
+    breed_id = ma.auto_field()
+    gender = ma.auto_field()
