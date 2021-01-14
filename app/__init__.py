@@ -1,6 +1,7 @@
 from flask import Flask
 from app.views.home import bp_home
 from app.views.owner_views import bp_owner
+from app.views.dog_views import bp_dogs
 from environs import Env
 from app.models import db, ma, mg
 
@@ -22,5 +23,6 @@ def create_app():
 
     app.register_blueprint(bp_home)
     app.register_blueprint(bp_owner)
+    app.register_blueprint(bp_dogs)
 
     return app

@@ -12,9 +12,6 @@ class Dog(db.model):
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
-    # gives = db.relationship("Like", back_populates="dog_give")
-    # receives = db.relationship("Like", back_populates="dog_receive")
-
     # conversations = db.relationship('Conversation',
     #       back_populates='dog_conversation')
 
