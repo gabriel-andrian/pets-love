@@ -7,11 +7,13 @@ from app.models.breed_model import Breed, db, BreedSchema
 
 bp_breed = Blueprint('bp_breed', __name__, url_prefix='/breed')
 
+
 @bp_breed.route('/', methods=['GET'])
 def get():
     breed = Breed.query.all()
 
     return {'data': BreedSchema(many=True).dump(breed)}, HTTPStatus.OK
+
 
 @bp_breed.route('/', methods=['POST'])
 def create():
