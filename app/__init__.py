@@ -7,6 +7,7 @@ from app.models import db, ma, mg
 from app.views.home import bp_home
 from app.views.breed_view import bp_breed
 from app.views.owner_views import bp_owner
+from app.views.dog_views import bp_dogs
 from app.views.authorization_view import bp_authorization
 from app.views.like_views import bp_like
 
@@ -34,6 +35,7 @@ def create_app():
 
     app.register_blueprint(bp_authorization)
     app.register_blueprint(bp_owner)
+    app.register_blueprint(bp_dogs)
 
     app.register_blueprint(bp_like)
 

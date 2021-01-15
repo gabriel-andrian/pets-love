@@ -25,11 +25,12 @@ def signup():
         password=data['password']
     )
 
-    print(owner.name)
 
     try:
         db.session.add(owner)
         db.session.commit()
+        # db.session.close()
+
         return {'msg': f'created: {owner}'}, HTTPStatus.CREATED
 
     except IntegrityError:
