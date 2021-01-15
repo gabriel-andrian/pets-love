@@ -20,10 +20,11 @@ def signup():
         document=data['document'],
         email=data['email'],
         address=data['name'],
-        # password = sha256(data['password']) --
-        # tá aqui só pra lembrar de criptografar; substituir
+        # password = sha256(data['password']) -- tá aqui só pra lembrar de
+        # criptografar; substituir
         password=data['password']
     )
+
 
     try:
         db.session.add(owner)

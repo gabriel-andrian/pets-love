@@ -5,8 +5,9 @@ class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     surname = db.Column(db.String(64), nullable=True)
-    document = db.Column(db.String(20), nullable=False)  # cpf, rg, etc.
-    email = db.Column(db.String(128), nullable=False)
+    document = db.Column(db.String(20), nullable=False, unique=True)
+    # cpf, rg, etc.
+    email = db.Column(db.String(128), nullable=False, unique=True)
     address = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
 

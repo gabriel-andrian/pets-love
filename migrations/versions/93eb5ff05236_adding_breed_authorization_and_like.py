@@ -1,8 +1,8 @@
-"""Adding Owner table
+"""Adding breed, authorization and like
 
-Revision ID: bff2c9df1cb3
+Revision ID: 93eb5ff05236
 Revises: 
-Create Date: 2021-01-14 09:42:32.177114
+Create Date: 2021-01-15 09:03:27.553271
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bff2c9df1cb3'
+revision = '93eb5ff05236'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,7 +26,9 @@ def upgrade():
     sa.Column('email', sa.String(length=128), nullable=False),
     sa.Column('address', sa.String(length=128), nullable=False),
     sa.Column('password', sa.String(length=128), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('document'),
+    sa.UniqueConstraint('email')
     )
     # ### end Alembic commands ###
 

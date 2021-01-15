@@ -10,7 +10,6 @@ bp_owner = Blueprint("api_owner", __name__, url_prefix="/owner")
 @bp_owner.route("/", methods=["PATCH"])
 @jwt_required
 def update():
-
     owner_id = get_jwt_identity()
 
     data = request.get_json()
@@ -32,7 +31,6 @@ def update():
 @bp_owner.route("/", methods=["DELETE"])
 @jwt_required
 def delete():
-
     owner_id = get_jwt_identity()
 
     Owner.query.get_or_404(owner_id)
