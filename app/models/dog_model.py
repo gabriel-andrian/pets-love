@@ -1,12 +1,12 @@
 from app.models import db, ma
 
 
-class Dog(db.model):
+class Dog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     details = db.Column(db.String(1024), nullable=False)
-    owner_id = db.Column(db.Integer, db.foreignKey('owner.id'))
-    breed_id = db.Column(db.Integer, db.foreignKey('breed.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
+    breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
 
     # Relationship
@@ -18,8 +18,8 @@ class Dog(db.model):
     # messages = db.relationship('Message', back_populates='dog_message')
 
 
-def __repr__(self):
-    return f"<Dog {self.name} />"
+    def __repr__(self):
+        return f"<Dog {self.name} />"
 
 
 class DogSchema(ma.SQLAlchemySchema):
