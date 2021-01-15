@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required
 from http import HTTPStatus
 from sqlalchemy.exc import IntegrityError
 
@@ -10,6 +11,7 @@ bp_breed = Blueprint('bp_breed', __name__, url_prefix='/breed')
 
 
 @bp_breed.route('/', methods=['GET'])
+@jwt_required
 def get():
     breed = Breed.query.all()
 
@@ -17,6 +19,7 @@ def get():
 
 
 @bp_breed.route('/', methods=['POST'])
+@jwt_required
 def create():
     data = request.get_json()
 
