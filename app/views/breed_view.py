@@ -1,17 +1,16 @@
-from flask import Blueprint, request
+from flask import Blueprint
 from http import HTTPStatus
-from sqlalchemy.exc import IntegrityError
-
-from app.services.http import build_api_response
-from app.models.breed_model import Breed, db, BreedSchema
+from app.models.breed_model import Breed, BreedSchema
 
 bp_breed = Blueprint('bp_breed', __name__, url_prefix='/breed')
+
 
 @bp_breed.route('/', methods=['GET'])
 def get():
     breed = Breed.query.all()
 
     return {'data': BreedSchema(many=True).dump(breed)}, HTTPStatus.OK
+
 
 @bp_breed.route('/', methods=['POST'])
 def create():

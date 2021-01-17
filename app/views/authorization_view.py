@@ -8,21 +8,22 @@ from datetime import timedelta
 from app.models import db
 from app.models.owner_model import Owner
 
-bp_authorization = Blueprint('authorization', __name__, url_prefix = '/auth')
+bp_authorization = Blueprint('authorization', __name__, url_prefix='/auth')
 
 
-@bp_authorization.route('/signup', methods = ['POST'])
+@bp_authorization.route('/signup', methods=['POST'])
 def signup():
 
     data = request.get_json()
     owner = Owner(
-        name = data['name'],
-        surname = data['surname'],
-        document = data['document'],
-        email = data['email'],
-        address = data['name'],
-        # password = sha256(data['password']) -- tá aqui só pra lembrar de criptografar; substituir
-        password = data['password']
+        name=data['name'],
+        surname=data['surname'],
+        document=data['document'],
+        email=data['email'],
+        address=data['name'],
+        # password = sha256(data['password']) -- tá aqui só pra lembrar de
+        # criptografar; substituir
+        password=data['password']
     )
 
     try:
@@ -34,18 +35,19 @@ def signup():
         return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
-@bp_authorization.route('/login', methods = ['POST'])
+@bp_authorization.route('/login', methods=['POST'])
 def login():
 
     email = request.json.get('email')
-    password = request.json.get('password') # criptografar
-    owner = Owner.query.filter_by(email = email).filter_by(password = password).first() or None
+    password = request.json.get('password')  # criptografar
+    owner = Owner.query.filter_by(email=email).filter_by(
+        password=password).first() or None
     if not owner:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
     access_token = create_access_token(
-        identity = owner.id,
-        expires_delta = timedelta(days = 10)
+        identity=owner.id,
+        expires_delta=timedelta(days=10)
     )
 
     return {
