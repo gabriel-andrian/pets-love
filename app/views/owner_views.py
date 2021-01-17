@@ -40,3 +40,4 @@ def delete():
 
     db.session.commit()
     return {"msg": f'Dono com id {owner_id} deletado'}, HTTPStatus.OK
+ 

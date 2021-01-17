@@ -1,3 +1,4 @@
+from app.services.http import build_api_response
 from flask import Blueprint, request
 from http import HTTPStatus
 from sqlalchemy.exc import IntegrityError
@@ -23,18 +24,14 @@ def signup():
         # password = sha256(data['password']) -- tá aqui só pra lembrar de criptografar; substituir
         password = data['password']
     )
-    
-    print(owner.name)
 
     try:
         db.session.add(owner)
         db.session.commit()
-        # db.session.close()
-        
-        return {'msg': f'created: {owner}'}, HTTPStatus.CREATED
+        return build_api_response(HTTPStatus.CREATED)
 
     except IntegrityError:
-        return {'error': HTTPStatus.BAD_REQUEST}, HTTPStatus.BAD_REQUEST
+        return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
 @bp_authorization.route('/login', methods = ['POST'])
@@ -44,7 +41,7 @@ def login():
     password = request.json.get('password') # criptografar
     owner = Owner.query.filter_by(email = email).filter_by(password = password).first() or None
     if not owner:
-        return {"error": "Dados incorretos, tente novamente."}, 404
+        return build_api_response(HTTPStatus.NOT_FOUND)
 
     access_token = create_access_token(
         identity = owner.id,
@@ -57,4 +54,4 @@ def login():
             "userId": owner.id,
             "Access token": f"Bearer {access_token}"
         }
-    }
+    }, HTTPStatus.ACCEPTED
