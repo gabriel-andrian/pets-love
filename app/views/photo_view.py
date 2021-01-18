@@ -2,7 +2,8 @@ from flask import Blueprint, request
 from http import HTTPStatus
 from sqlalchemy.exc import IntegrityError
 from app.models import db
-from app.models.dog_model import Photo, Dog, Owner
+from app.models.photos_model import Photo
+from app.services.http import build_api_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
@@ -20,9 +21,9 @@ def create():
     try:
         db.session.add(photo)
         db.session.commit()
-        return HTTPStatus.CREATED
+        return build_api_response(HTTPStatus.CREATED)
     except IntegrityError:
-        return HTTPStatus.BAD_REQUEST
+        return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
 @bp_photo.route("/<photo_id>", methods=["DELETE"])
