@@ -28,7 +28,7 @@ Exemplos de commits:
 
 * Update:
     ```
-    PATCH /owner/<owner_id>
+    PATCH /owner/
     HEADER <Authorization>
     {
         "name": "",
@@ -43,7 +43,7 @@ Exemplos de commits:
 
 * Delete:
     ```
-    DELETE /owner/<owner_id>
+    DELETE /owner/
     HEADER <Authorization>
     ```
 
