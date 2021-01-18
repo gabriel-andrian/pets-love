@@ -7,9 +7,10 @@ def build_api_response(http_status) -> tuple:
 
 def build_response_message(http_status):
     messages = {
-        HTTPStatus.BAD_REQUEST: 'Bad Request', 
-        HTTPStatus.CREATED: 'Created', 
-        HTTPStatus.NOT_FOUND: 'Not Found', 
+        HTTPStatus.BAD_REQUEST: 'Bad Request',
+        HTTPStatus.CREATED: 'Created',
+        HTTPStatus.NOT_FOUND: 'Not Found',
+        HTTPStatus.FOUND: 'Found',
         HTTPStatus.OK: 'Resource Deleted Successfully',
         HTTPStatus.FORBIDDEN: 'Resource can be accessed only by its owner'
     }
