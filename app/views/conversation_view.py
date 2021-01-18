@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.services.http import build_api_response
 from app.models import db
-from app.models.conversation_model import Conversation, Message, ConversationSchema, MessageSchema
+from app.models.dog_model import Conversation, Message, ConversationSchema, MessageSchema
 
 
 bp_conversation = Blueprint(

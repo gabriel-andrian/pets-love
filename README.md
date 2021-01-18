@@ -65,3 +65,35 @@ Exemplos de commits:
     GET /like/dog/<dog_id>/has_like_with/<other_dog_id>
     HEADER <Authorization>
     ```
+
+### Conversation
+
+* New Message:
+    ```
+    POST /conversation/<int:conv_id>/msg
+    HEADER <Authorization>
+    {
+        "dog_id": 0,
+        "message_text" = "Text"
+    }
+    ```
+
+* Delete Message:
+    ```
+    DELETE /conversation/msg
+    HEADER <Authorization>
+    {
+        "dog_id": 0,
+        "msg_id": 0
+    }
+    ```
+
+* New Conversation:
+    ```
+    POST /conversation
+    HEADER <Authorization>
+    {
+        "dog_id": 0,
+        "msg_id": 0
+    }
+    ```
