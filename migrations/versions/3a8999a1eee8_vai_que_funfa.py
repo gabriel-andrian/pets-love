@@ -1,8 +1,8 @@
-"""added breed
+"""vai que funfa
 
-Revision ID: 901dc0764e6e
-Revises: 
-Create Date: 2021-01-14 13:27:12.401916
+Revision ID: 3a8999a1eee8
+Revises: 93eb5ff05236
+Create Date: 2021-01-15 09:18:15.629015
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '901dc0764e6e'
-down_revision = None
+revision = '3a8999a1eee8'
+down_revision = '93eb5ff05236'
 branch_labels = None
 depends_on = None
 
