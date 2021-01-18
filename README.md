@@ -28,7 +28,7 @@ Exemplos de commits:
 
 * Update:
     ```
-    PATCH /owner/<owner_id>
+    PATCH /owner/
     HEADER <Authorization>
     {
         "name": "",
@@ -43,7 +43,7 @@ Exemplos de commits:
 
 * Delete:
     ```
-    DELETE /owner/<owner_id>
+    DELETE /owner/
     HEADER <Authorization>
     ```
 
@@ -58,10 +58,4 @@ Exemplos de commits:
         "dog_id_receive": 0,
         "dislike": false
     }
-    ```
-
-* Has Like (?):
-    ```
-    GET /like/dog/<dog_id>/has_like_with/<other_dog_id>
-    HEADER <Authorization>
     ```

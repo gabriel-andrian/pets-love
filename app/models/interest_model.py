@@ -9,7 +9,6 @@ from app.models.breed_model import BreedSchema
 class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    gender = db.Column(db.Boolean, db.ForeignKey('dog.gender'), nullable=False)
     dog_id = db.Column(db.Integer, db.ForeignKey('dog.id'), nullable=False)
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'), nullable=False)
 
@@ -23,6 +22,5 @@ class InterestSchema(ma.SQLAlchemySchema):
     
     id = ma.auto_field()
 
-    gender = fields.Nested(DogSchema)
     dog_id = fields.Nested(DogSchema)
     breed_id = fields.Nested(BreedSchema)

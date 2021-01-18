@@ -2,7 +2,9 @@ from flask import Blueprint, request
 from app.models import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.owner_model import Owner, OwnerSchema
+from app.models.dog_model import Dog
 from http import HTTPStatus
+from app.services.http import build_api_response
 
 bp_owner = Blueprint("api_owner", __name__, url_prefix="/owner")
 
@@ -34,7 +36,8 @@ def delete():
     owner_id = get_jwt_identity()
 
     Owner.query.get_or_404(owner_id)
+    Dog.query.filter_by(owner_id=owner_id).delete()
     Owner.query.filter_by(id=owner_id).delete()
 
     db.session.commit()
-    return {"msg": f'Dono com id {owner_id} deletado'}, HTTPStatus.OK
+    return build_api_response(HTTPStatus.OK)
