@@ -9,12 +9,20 @@ from app.models.interest_model import Interest
 
 bp_interest = Blueprint('api_interest', __name__, url_prefix='/interest')
 
+@bp_interest.route('/<int:interest_id>', methods=['GET'])
+def get_dog_id(interest_id: int):
+
+    dog_interest = Interest.query.get_or_404(interest_id)
+
+    return {'data': InterestSchema().dump(dog_interest)}, HTTPStatus.OK
+
+
+
 @bp_interest.route('/', methods=['POST'])
 def create():
     data = request.get_json()
     
     interest = Interest(
-        gender=data["gender"],
         dog_id=data["dog_id"],
         breed_id=data["breed_id"]
     )
