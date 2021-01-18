@@ -17,7 +17,6 @@ class Dog(db.Model):
 
     # messages = db.relationship('Message', back_populates='dog_message')
 
-
     def __repr__(self):
         return f"<Dog {self.name} />"
 
