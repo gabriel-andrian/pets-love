@@ -28,7 +28,6 @@ def create():
         db.session.add(dog)
         db.session.commit()
         return build_api_response(HTTPStatus.CREATED)
-
     except IntegrityError:
         return build_api_response(HTTPStatus.BAD_REQUEST)
 

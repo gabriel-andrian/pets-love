@@ -1,3 +1,5 @@
+from app.views.interest_views import bp_interest
+from app.views.photo_view import bp_photo
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from secrets import token_hex
@@ -12,8 +14,6 @@ from app.views.breed_views import bp_breed
 from app.views.authorization_view import bp_authorization
 from app.views.conversation_view import bp_conversation
 from app.views.like_views import bp_like
-from app.views.interest_views import bp_interest
-
 
 
 def create_app():
@@ -43,7 +43,7 @@ def create_app():
     app.register_blueprint(bp_authorization)
 
     app.register_blueprint(bp_like)
+    app.register_blueprint(bp_photo)
     app.register_blueprint(bp_interest)
-    
 
     return app
