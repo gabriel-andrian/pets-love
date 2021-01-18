@@ -51,6 +51,6 @@ class MessageSchema(ma.SQLAlchemySchema):
 
     id = ma.auto_field()
     message = ma.auto_field()
-    ts = ma.auto_field()
+    time_started = ma.auto_field()
     dog_id = ma.auto_field()
     conversation_id = ma.auto_field()
