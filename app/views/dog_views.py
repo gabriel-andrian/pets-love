@@ -4,16 +4,21 @@ from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.models.dog_model import Dog, DogSchema
 from app.services.http import build_api_response
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
-bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dogs")
+
+bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dog")
 
 dog_schema = DogSchema()
 dogs_schema = DogSchema(many=True)
 
 
 @bp_dogs.route('/', methods=['POST'])
+@jwt_required
 def create():
     data = request.get_json()
+    owner_id = get_jwt_identity()
+
     dog = Dog(
         name=data['name'],
         details=data['details'],
@@ -36,7 +41,8 @@ def list_all():
     return {'data': dogs_schema.dump(dogs)}, HTTPStatus.OK
 
 
-@ bp_dogs.route('/<int:dog_id>')
+@ bp_dogs.route('/<int:dog_id>', methods=['GET'])
+@jwt_required
 def get(dog_id: int):
     dog = Dog.query.get_or_404(dog_id)
 
@@ -44,6 +50,7 @@ def get(dog_id: int):
 
 
 @bp_dogs.route("/<int:dog_id>", methods=["PATCH"])
+@jwt_required
 def update(dog_id: int):
     data = request.get_json()
     dog = Dog.query.get_or_404(dog_id)
@@ -59,6 +66,7 @@ def update(dog_id: int):
 
 
 @bp_dogs.route("/<int:dog_id>", methods=["DELETE"])
+@jwt_required
 def delete(dog_id: int):
     Dog.query.get_or_404(dog_id)
 
