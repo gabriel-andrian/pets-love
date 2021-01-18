@@ -1,4 +1,7 @@
+from __future__ import annotations
 from app.models import db, ma
+from app.models.conversation_model import ConversationSchema, dog_conversation
+from marshmallow import fields
 
 
 class Dog(db.Model):
@@ -12,10 +15,10 @@ class Dog(db.Model):
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
-    # conversations = db.relationship('Conversation',
-    #       back_populates='dog_conversation')
+    conversations = db.relationship('Conversation', secondary=dog_conversation,
+                                    back_populates='dogs')
 
-    # messages = db.relationship('Message', back_populates='dog_message')
+    messages = db.relationship('Message', back_populates='dogs')
 
     def __repr__(self):
         return f"<Dog {self.name} />"
@@ -31,3 +34,5 @@ class DogSchema(ma.SQLAlchemySchema):
     owner_id = ma.auto_field()
     breed_id = ma.auto_field()
     gender = ma.auto_field()
+    conversations = fields.Nested(ConversationSchema, many=True)
+    messages = fields.Nested(MessageSchema, many=True)
