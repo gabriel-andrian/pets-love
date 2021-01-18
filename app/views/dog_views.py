@@ -3,6 +3,7 @@ from http import HTTPStatus
 from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.models.dog_model import Dog, DogSchema
+from app.services.http import build_api_response
 
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dogs")
 
@@ -23,9 +24,9 @@ def create():
     try:
         db.session.add(dog)
         db.session.commit()
-        return HTTPStatus.CREATED
+        return build_api_response(HTTPStatus.CREATED)
     except IntegrityError:
-        return HTTPStatus.BAD_REQUEST
+        return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
 @ bp_dogs.route('/', methods=['GET'])
