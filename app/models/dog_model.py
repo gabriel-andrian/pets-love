@@ -86,4 +86,3 @@ class DogSchema(ma.SQLAlchemySchema):
     breed_id = ma.auto_field()
     gender = ma.auto_field()
     conversations = fields.Nested(ConversationSchema, many=True)
-    messages = fields.Nested(MessageSchema, many=True)
