@@ -31,25 +31,14 @@ def get():
 @jwt_required
 def create():
     
-    # with open(env('BREEDS_CSV')) as f:
+    with open(env('BREEDS_CSV')) as f:
 
-    #     reader = csv.DictReader(f)
-
-    #     reader.to_sql('Breed', con=engine, index= False, if_exists= 'append')
-    #     query = db.update(finaltable).where(finaltable.DataSource == None).values(DataSource == f[i])
-
-    #     connection.execute(query)
-
-
-
-    data = request.get_json()
-
-    breed = Breed(
-        name=data["name"]
-    )
+        reader = csv.DictReader(f)
+        for breed in reader:
+            record = Breed(**{"name":breed['Breed']})
+            db.session.add(record)
 
     try:
-        db.session.add(breed)
         db.session.commit()
         return build_api_response(HTTPStatus.CREATED)
     except IntegrityError:

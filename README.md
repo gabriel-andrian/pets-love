@@ -59,3 +59,12 @@ Exemplos de commits:
         "dislike": false
     }
     ```
+
+### Breed
+
+    * Listar todas as racas de caes:
+        ```
+        GET /breed
+        HEADER <Authorization>
+
+        ```
