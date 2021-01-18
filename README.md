@@ -59,9 +59,3 @@ Exemplos de commits:
         "dislike": false
     }
     ```
-
-* Has Like (?):
-    ```
-    GET /like/dog/<dog_id>/has_like_with/<other_dog_id>
-    HEADER <Authorization>
-    ```
