@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.models.dog_model import Dog, DogSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.services.http import build_api_response
 
 
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dogs")

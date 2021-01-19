@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.services.http import build_api_response
 from app.models import db
-from app.models.dog_model import Conversation, Message, ConversationSchema, MessageSchema
+from app.models.dog_model import Dog, Conversation, Message, ConversationSchema, MessageSchema
 
 
 bp_conversation = Blueprint(
@@ -19,8 +19,8 @@ def create_conversation():
     owner_id = get_jwt_identity()
 
     new_conversation = Conversation(dogs=[], messages=[])
-    db.add(new_conversation)
-    db.commit()
+    db.session.add(new_conversation)
+    db.session.commit()
     return build_api_response(HTTPStatus.CREATED)
 
 
@@ -57,19 +57,26 @@ def get_one_conversation(conv_id):
 def create_msg(conv_id):
     owner_id = get_jwt_identity()
     dog_id = request.json.get('dog_id')
-    found = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
+    dog_to = request.json.get('dog_to')
+    found = Dog.query.filter_by(owner_id=owner_id, id=dog_id)
     if not found:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
     message_text = request.json.get('message_text')
 
     msg = Message(
-        message_text=message_text,
+        message=message_text,
         dog_id=dog_id,
         conversation_id=conv_id
     )
+    conv = Conversation(
+        dogs=[dog_id, dog_to],
+        messages=[msg]
+    )
 
     db.session.add(msg)
+    db.session.commit()
+    db.session.add(conv)
     db.session.commit()
 
     return {'data': MessageSchema().dump(msg)}, HTTPStatus.CREATED
