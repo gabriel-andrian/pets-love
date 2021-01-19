@@ -67,6 +67,7 @@ def create_msg(conv_id):
     msg = Message(
         message=message_text,
         dog_id=dog_id,
+        dog_to=dog_to,
         conversation_id=conv_id
     )
     conv = Conversation(

@@ -48,6 +48,7 @@ class Message(db.Model):
     message = col(db.Text, nullable=False)
     ts = col(db.DateTime, default=datetime.utcnow)
     dog_id = col(db.Integer, db.ForeignKey('dog.id'), nullable=False)
+    dog_to = col(db.Integer, db.ForeignKey('dog.id'), nullable=False)
     conversation_id = col(db.Integer, db.ForeignKey(
         'conversation.id'), nullable=False)
 
