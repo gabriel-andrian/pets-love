@@ -5,7 +5,6 @@ from app.models.dog_model import DogSchema
 from app.models.breed_model import BreedSchema
 
 
-
 class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -19,7 +18,7 @@ class Interest(db.Model):
 class InterestSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Interest
-    
+
     id = ma.auto_field()
 
     dog_id = fields.Nested(DogSchema)
