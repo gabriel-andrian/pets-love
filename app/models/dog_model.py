@@ -1,14 +1,17 @@
 from app.models import db, ma
+from app.models.breed_model import BreedSchema
+from marshmallow import fields
 
 
 class Dog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    details = db.Column(db.String(1024), nullable=False)
+    details = db.Column(db.String(300), nullable=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
 
+    breed = db.relationship("Breed", backref="dog")
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
@@ -29,5 +32,5 @@ class DogSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     details = ma.auto_field()
     owner_id = ma.auto_field()
-    breed_id = ma.auto_field()
+    breed = fields.Nested(BreedSchema)
     gender = ma.auto_field()

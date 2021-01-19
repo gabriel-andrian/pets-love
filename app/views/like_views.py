@@ -1,9 +1,10 @@
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import db
 from http import HTTPStatus
 
 from app.models.like_model import Like, LikeSchema
+from app.models.owner_model import Owner
 
 from app.services.like_services import verify_match
 
@@ -15,20 +16,30 @@ bp_like = Blueprint('api_like', __name__, url_prefix="/like")
 def give_like():
     data = request.get_json()
 
-    if Like.query.filter_by(
-        dog_id_give=data['dog_id_give'],
-        dog_id_receive=data['dog_id_receive']
-    ).first() is not None:
-        return {'msg': "Like alredy exists!"}, HTTPStatus.BAD_REQUEST
+    owner = Owner.query.get(get_jwt_identity())
 
-    like = Like(
-        dog_id_give=data['dog_id_give'],
-        dog_id_receive=data['dog_id_receive'],
-        dislike=data['dislike']
-    )
+    list_of_dogs_in_owner = [dog.id for dog in owner.dogs]
 
-    verify_match(like)
+    for dog_id in list_of_dogs_in_owner:
+        if dog_id == data['dog_id_give']:
+            if Like.query.filter_by(
+                dog_id_give=data['dog_id_give'],
+                dog_id_receive=data['dog_id_receive']
+            ).first() is not None:
+                return {'msg': "Like alredy exists!"}, HTTPStatus.BAD_REQUEST
 
-    db.session.add(like)
-    db.session.commit()
-    return {'data': {'match': LikeSchema().dump(like)}}, HTTPStatus.CREATED
+            like = Like(
+                dog_id_give=data['dog_id_give'],
+                dog_id_receive=data['dog_id_receive'],
+                dislike=data['dislike']
+            )
+
+            verify_match(like)
+
+            db.session.add(like)
+            db.session.commit()
+            return {'data': {'match': LikeSchema().dump(like)}}, \
+                HTTPStatus.CREATED
+
+    msg = f"Dog with id {data['dog_id_give']} not exists, or is not your dog!"
+    return {'msg': msg}, HTTPStatus.NOT_FOUND
