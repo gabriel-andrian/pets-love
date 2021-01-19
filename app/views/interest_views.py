@@ -1,8 +1,7 @@
 from flask import Blueprint, request
 from http import HTTPStatus
-from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import join
 
 from app.models import db
 from app.services.http import build_api_response
@@ -45,7 +44,6 @@ def created_new_interest():
         return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
-
 @bp_interest.route('/<int:interest_id>', methods=['PATCH'])
 @jwt_required
 def update_interest(interest_id: int):
@@ -59,7 +57,6 @@ def update_interest(interest_id: int):
     dog.gender_interest = data['gender_interest'] if data.get(
         'gender_interest') else dog.gender_interest
 
-        
     try:
         db.session.commit()
         return build_api_response(HTTPStatus.CREATED)
