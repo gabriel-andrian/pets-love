@@ -9,7 +9,6 @@ from app.models.breed_model import Breed, BreedSchema
 
 
 import csv
-import os
 from environs import Env
 
 env = Env()
@@ -30,12 +29,12 @@ def get():
 @bp_breed.route('/', methods=['POST'])
 @jwt_required
 def create():
-    
+
     with open(env('BREEDS_CSV')) as f:
 
         reader = csv.DictReader(f)
         for breed in reader:
-            record = Breed(**{"name":breed['Breed']})
+            record = Breed(**{"name": breed['Breed']})
             db.session.add(record)
 
     try:

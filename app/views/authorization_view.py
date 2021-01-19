@@ -25,7 +25,6 @@ def signup():
         password=data['password']
     )
 
-
     try:
         db.session.add(owner)
         db.session.commit()
