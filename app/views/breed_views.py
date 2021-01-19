@@ -6,13 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.services.http import build_api_response
 from app.models.breed_model import Breed, BreedSchema
-
-
-import csv
-from environs import Env
-
-env = Env()
-env.read_env()
+from app.services.insert_list_breeds import insert_list_csv_breed
 
 
 bp_breed = Blueprint('bp_breed', __name__, url_prefix='/breed')
@@ -30,12 +24,7 @@ def get():
 @jwt_required
 def create():
 
-    with open(env('BREEDS_CSV')) as f:
-
-        reader = csv.DictReader(f)
-        for breed in reader:
-            record = Breed(**{"name": breed['Breed']})
-            db.session.add(record)
+    insert_list_csv_breed()
 
     try:
         db.session.commit()
