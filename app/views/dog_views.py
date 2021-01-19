@@ -5,9 +5,14 @@ from app.models import db
 from app.models.dog_model import Dog, DogSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.http import build_api_response
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
+<<<<<<< HEAD
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dogs")
+=======
+bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dog")
+>>>>>>> e235ee21c7836bed8ab44690cdce1dcb5d618e07
 
 dog_schema = DogSchema()
 dogs_schema = DogSchema(many=True)
@@ -18,6 +23,8 @@ dogs_schema = DogSchema(many=True)
 def create():
     owner_id = get_jwt_identity()
     data = request.get_json()
+    owner_id = get_jwt_identity()
+
     dog = Dog(
         name=data['name'],
         details=data['details'],
@@ -41,7 +48,11 @@ def list_all():
     return {'data': dogs_schema.dump(dogs)}, HTTPStatus.OK
 
 
+<<<<<<< HEAD
 @ bp_dogs.route('/<int:dog_id>')
+=======
+@ bp_dogs.route('/<int:dog_id>', methods=['GET'])
+>>>>>>> e235ee21c7836bed8ab44690cdce1dcb5d618e07
 @jwt_required
 def get(dog_id: int):
     owner_id = get_jwt_identity()
@@ -77,3 +88,8 @@ def delete(dog_id: int):
     db.session.commit()
 
     return {"msg": f'Dog com id {dog_id} deletado'}, HTTPStatus.OK
+
+
+@ bp_dogs.route('/matches', methods=['GET'])
+def get_matches():
+    ...

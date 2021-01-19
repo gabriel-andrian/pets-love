@@ -2,9 +2,7 @@ from __future__ import annotations
 from app.models import db, ma, col
 from marshmallow import fields
 from datetime import datetime
-from app.models import db, ma
-<< << << < HEAD
-# from app.models.conversation_model import ConversationSchema, dog_conversation
+from app.models.breed_model import BreedSchema
 
 dog_conversation = db.Table(
     'dog_conversation',
@@ -13,14 +11,12 @@ dog_conversation = db.Table(
     col('conversation_id', db.Integer, db.ForeignKey(
         'conversation.id'), primary_key=True)
 )
-== == == =
->>>>>> > a9cbcff888b4a64f745aaba552879d16246bceff
 
 
 class Dog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    details = db.Column(db.String(1024), nullable=False)
+    details = db.Column(db.String(300), nullable=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
@@ -28,10 +24,10 @@ class Dog(db.Model):
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
-    # conversations = db.relationship('Conversation',
-    #       back_populates='dog_conversation')
+    conversations = db.relationship('Conversation',
+                                    secondary=dog_conversation, back_populates='dogs')
 
-    # messages = db.relationship('Message', back_populates='dog_message')
+    messages = db.relationship('Message', back_populates='dogs')
 
     def __repr__(self):
         return f"<Dog {self.name} />"
@@ -88,6 +84,6 @@ class DogSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     details = ma.auto_field()
     owner_id = ma.auto_field()
-    breed_id = ma.auto_field()
+    breed_id = fields.Nested(BreedSchema)
     gender = ma.auto_field()
     conversations = fields.Nested(ConversationSchema, many=True)
