@@ -97,3 +97,11 @@ Exemplos de commits:
         "msg_id": 0
     }
     ```
+### Breed
+
+    * Listar todas as racas de caes:
+        ```
+        GET /breed
+        HEADER <Authorization>
+
+        ```

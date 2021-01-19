@@ -1,8 +1,10 @@
 from __future__ import annotations
 from app.models import db, ma, col
-# from app.models.conversation_model import ConversationSchema, dog_conversation
 from marshmallow import fields
 from datetime import datetime
+from app.models import db, ma
+<< << << < HEAD
+# from app.models.conversation_model import ConversationSchema, dog_conversation
 
 dog_conversation = db.Table(
     'dog_conversation',
@@ -11,6 +13,8 @@ dog_conversation = db.Table(
     col('conversation_id', db.Integer, db.ForeignKey(
         'conversation.id'), primary_key=True)
 )
+== == == =
+>>>>>> > a9cbcff888b4a64f745aaba552879d16246bceff
 
 
 class Dog(db.Model):
@@ -24,10 +28,10 @@ class Dog(db.Model):
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
-    conversations = db.relationship('Conversation', secondary=dog_conversation,
-                                    back_populates='dogs')
+    # conversations = db.relationship('Conversation',
+    #       back_populates='dog_conversation')
 
-    messages = db.relationship('Message', back_populates='dogs')
+    # messages = db.relationship('Message', back_populates='dog_message')
 
     def __repr__(self):
         return f"<Dog {self.name} />"

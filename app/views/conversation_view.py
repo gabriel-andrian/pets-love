@@ -70,13 +70,13 @@ def create_msg(conv_id):
         dog_to=dog_to,
         conversation_id=conv_id
     )
+    db.session.add(msg)
+    db.session.commit()
+
     conv = Conversation(
         dogs=[dog_id, dog_to],
         messages=[msg]
     )
-
-    db.session.add(msg)
-    db.session.commit()
     db.session.add(conv)
     db.session.commit()
 
