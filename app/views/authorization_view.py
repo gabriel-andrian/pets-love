@@ -25,6 +25,15 @@ def signup():
     email = request.json.get('email')
     address = request.json.get('address')
     password = crypto(request.json.get('password'))
+
+    email_error = Owner.query.filter_by(email=email).first()
+    if email_error:
+        return {'Error': 'Email already taken. Try another one.'}, HTTPStatus.UNAUTHORIZED
+
+    document_error = Owner.query.filter_by(document=document).first()
+    if document_error:
+        return {'Error': 'Document alredy exists in DB. Please check your data and try again.'}, HTTPStatus.UNAUTHORIZED
+
     owner = Owner(
         name=name,
         surname=surname,
