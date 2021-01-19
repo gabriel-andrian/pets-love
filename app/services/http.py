@@ -10,7 +10,8 @@ def build_response_message(http_status):
         HTTPStatus.BAD_REQUEST: 'Bad Request',
         HTTPStatus.CREATED: 'Created',
         HTTPStatus.NOT_FOUND: 'Not Found',
-        HTTPStatus.OK: 'Resource Deleted Successfully'
+        HTTPStatus.OK: 'Resource Deleted Successfully',
+        HTTPStatus.UNAUTHORIZED: 'Unauthorized'
     }
 
     return {'msg': messages[http_status]}
