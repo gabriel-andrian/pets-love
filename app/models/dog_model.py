@@ -1,4 +1,6 @@
 from app.models import db, ma
+from app.models.breed_model import BreedSchema
+from marshmallow import fields
 
 
 class Dog(db.Model):
@@ -29,5 +31,5 @@ class DogSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     details = ma.auto_field()
     owner_id = ma.auto_field()
-    breed_id = ma.auto_field()
+    breed_id = fields.Nested(BreedSchema)
     gender = ma.auto_field()

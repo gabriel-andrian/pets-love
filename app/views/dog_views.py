@@ -74,3 +74,8 @@ def delete(dog_id: int):
     db.session.commit()
 
     return {"msg": f'Dog com id {dog_id} deletado'}, HTTPStatus.OK
+
+
+@ bp_dogs.route('/matches', methods=['GET'])
+def get_matches():
+    ...
