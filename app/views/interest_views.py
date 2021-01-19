@@ -35,8 +35,16 @@ def create():
         return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
-@bp_interest.route('/<int:interest_id>', methods=['DELETE'])
-def delete(interest_id: int):
-    interest_id_selected = Interest.query.filter_by(id = interest_id).delete()
+@bp_interest.route('/<int:interest_id>', methods=['PATCH'])
+def update(interest_id: int):
+
+    data = request.get_json()
+
+    interest = Interest.query.get_or_404(interest_id)
+
+    interest.dog_id = data['dog_id'] if data.get('dog_id') else interest.dog_id
+    interest.breed_id = data['breed_id'] if data.get('breed_id') else interest.breed_id
+
+
     db.session.commit()
-    return build_api_response(HTTPStatus.OK)
+    return build_api_response(HTTPStatus.CREATED)
