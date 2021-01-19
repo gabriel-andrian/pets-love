@@ -9,7 +9,7 @@ from app.models.breed_model import Breed, BreedSchema
 from app.services.insert_list_breeds import insert_list_csv_breed
 
 
-bp_breed = Blueprint('bp_breed', __name__, url_prefix='/breed')
+bp_breed = Blueprint('api_breed', __name__, url_prefix='/breed')
 
 
 @bp_breed.route('/', methods=['GET'])

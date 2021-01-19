@@ -11,7 +11,8 @@ def build_response_message(http_status):
         HTTPStatus.CREATED: 'Created',
         HTTPStatus.NOT_FOUND: 'Not Found',
         HTTPStatus.OK: 'Resource Deleted Successfully',
-        HTTPStatus.UNAUTHORIZED: 'Unauthorized'
+        HTTPStatus.UNAUTHORIZED: 'Unauthorized',
+        HTTPStatus.FORBIDDEN: 'Forbidden'
     }
 
     return {'msg': messages[http_status]}
