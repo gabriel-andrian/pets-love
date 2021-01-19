@@ -1,9 +1,10 @@
-from app.services.http import build_api_response
 from flask import Blueprint, request
 from http import HTTPStatus
+from datetime import timedelta
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token
-from datetime import timedelta
+from app.services.http import build_api_response
+from hashlib import sha256
 
 from app.models import db
 from app.models.owner_model import Owner
@@ -11,19 +12,26 @@ from app.models.owner_model import Owner
 bp_authorization = Blueprint('authorization', __name__, url_prefix='/auth')
 
 
+def crypto(value):
+    return sha256(value.encode()).hexdigest()
+
+
 @bp_authorization.route('/signup', methods=['POST'])
 def signup():
 
-    data = request.get_json()
+    name = request.json.get('name')
+    surname = request.json.get('surname')
+    document = request.json.get('document')
+    email = request.json.get('email')
+    address = request.json.get('address')
+    password = crypto(request.json.get('password'))
     owner = Owner(
-        name=data['name'],
-        surname=data['surname'],
-        document=data['document'],
-        email=data['email'],
-        address=data['name'],
-        # password = sha256(data['password']) -- tá aqui só pra lembrar de
-        # criptografar; substituir
-        password=data['password']
+        name=name,
+        surname=surname,
+        document=document,
+        email=email,
+        address=address,
+        password=password
     )
 
     try:
@@ -39,9 +47,9 @@ def signup():
 def login():
 
     email = request.json.get('email')
-    password = request.json.get('password')  # criptografar
-    owner = Owner.query.filter_by(email=email).filter_by(
-        password=password).first() or None
+    password = crypto(request.json.get('password'))
+    owner = Owner.query.filter_by(
+        email=email, password=password).first() or None
     if not owner:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
@@ -53,7 +61,7 @@ def login():
     return {
         "data": {
             "name": owner.name,
-            "userId": owner.id,
-            "Access token": f"Bearer {access_token}"
+            "owner_id": owner.id,
+            "token": access_token
         }
     }, HTTPStatus.ACCEPTED
