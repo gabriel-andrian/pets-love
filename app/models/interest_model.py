@@ -12,8 +12,6 @@ class Interest(db.Model):
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'), nullable=False)
     gender_interest = db.Column(db.Boolean, nullable=False)
 
-    dog_info = db.relationship("Dog", backref="interest")
-
 class InterestSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Interest
@@ -24,4 +22,3 @@ class InterestSchema(ma.SQLAlchemySchema):
     breed_id = ma.auto_field()
     gender_interest = ma.auto_field()
     
-    dog_info = fields.Nested(DogSchema)
