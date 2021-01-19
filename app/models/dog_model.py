@@ -11,6 +11,7 @@ class Dog(db.Model):
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
 
+    breed = db.relationship("Breed", backref="dog")
     # Relationship
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
@@ -31,5 +32,5 @@ class DogSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     details = ma.auto_field()
     owner_id = ma.auto_field()
-    breed_id = fields.Nested(BreedSchema)
+    breed = fields.Nested(BreedSchema)
     gender = ma.auto_field()
