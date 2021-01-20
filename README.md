@@ -129,11 +129,42 @@ Exemplos de commits:
     }
     ```
 
+## Detalhes dos Cãezinhos 
 ### Breed
 
-* Listar todas as racas de caes:
+* Listar todas as raças de caes:
     ```
     GET /breed
     HEADER <Authorization>
 
     ```
+
+* Adicionar as raças no banco de dados:
+    ```
+    POST /breed
+    HEADER <Authorization>
+
+    ```
+
+### Interest
+* Adicionar uma raça e genero de interesse do seu Dog
+    ```
+    POST /interest/
+    HEADER <Authorization>
+
+    ```
+
+* Listar o interesse do Dog selecionado
+    ```
+    GET /interest/<int: dog_id>
+    HEADER <Authorization>
+
+    ```
+
+* Editar a raça e genero de interesse do seu Dog
+    ```
+    PATCH /interest/<int: dog_id>
+    HEADER <Authorization>
+
+    ```
+
