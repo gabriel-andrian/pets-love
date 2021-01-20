@@ -7,9 +7,9 @@ from app.models.breed_model import BreedSchema
 dog_conversation = db.Table(
     'dog_conversation',
     col('dog_id', db.Integer, db.ForeignKey(
-        'dog.id'), primary_key=True),
+        'dog.id')),
     col('conversation_id', db.Integer, db.ForeignKey(
-        'conversation.id'), primary_key=True)
+        'conversation.id'))
 )
 
 
@@ -56,17 +56,6 @@ class Message(db.Model):
     dogs = db.relationship('Dog', back_populates='messages')
 
 
-class MessageSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Message
-
-    id = ma.auto_field()
-    message = ma.auto_field()
-    ts = ma.auto_field()
-    dog_id = ma.auto_field()
-    conversation_id = ma.auto_field()
-
-
 class DogSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Dog
@@ -80,11 +69,23 @@ class DogSchema(ma.SQLAlchemySchema):
     conversations = ma.auto_field()
 
 
+class MessageSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Message
+
+    id = ma.auto_field()
+    message = ma.auto_field()
+    ts = ma.auto_field()
+    dog_id = ma.auto_field()
+    conversation_id = ma.auto_field()
+
+
 class ConversationSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Conversation
 
     id = ma.auto_field()
     time_started = ma.auto_field()
-    messages = ma.auto_field()
+    messages = fields.Nested(MessageSchema, many=True)
+    # messages = ma.auto_field()
     dogs = ma.auto_field()

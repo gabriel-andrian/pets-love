@@ -16,15 +16,17 @@ bp_message = Blueprint(
 def create_msg():
     owner_id = get_jwt_identity()
     dog_id = request.json.get('dog_id')
+    conv_id = request.json.get('conv_id')
     message_text = request.json.get('message_text')
 
-    found = Dog.query.filter_by(owner_id=owner_id, id=dog_id)
-    if not found:
+    dog = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
+    if not dog:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
     msg = Message(
         message=message_text,
         dog_id=dog_id,
+        conversation_id=conv_id
     )
 
     db.session.add(msg)
@@ -33,31 +35,30 @@ def create_msg():
     return {'data': MessageSchema().dump(msg)}, HTTPStatus.CREATED
 
 
+@bp_message.route('/<int:msg_id>', methods=['GET'])
 @jwt_required
-@bp_message.route('/msg/<int:msg_id>', methods=['GET'])
 def get_one_msg(msg_id):
 
-    data = Message.query.filter_by(id=msg_id)[0]
+    data = Message.query.filter_by(id=msg_id).first()
     if not data:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
-    return {"data": MessageSchema().dump(data)}, HTTPStatus.FOUND
+    return {"data": MessageSchema().dump(data)}, HTTPStatus.OK
 
 
+@bp_message.route('/<int:msg_id>', methods=['DELETE'])
 @jwt_required
-@bp_message.route('/msg', methods=['DELETE'])
-def delete_msg():
+def delete_msg(msg_id):
     owner_id = get_jwt_identity()
     dog_id = request.json.get('dog_id')
-    found = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
-    if not found:
-        return build_api_response(HTTPStatus.NOT_FOUND)
+    dog = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
+    if not dog:
+        return {"dog": build_api_response(HTTPStatus.NOT_FOUND)}
 
-    msg_id = request.get_or_404('msg_id')
-    msg_found = Message.query.filter_by(id=msg_id, dog_id=dog_id).first()
-    if not msg_found:
-        return build_api_response(HTTPStatus.NOT_FOUND)
+    msg = Message.query.filter_by(id=msg_id, dog_id=dog_id)
+    if not msg.first():
+        return {"msg": build_api_response(HTTPStatus.NOT_FOUND)}
 
-    msg_found.delete()
+    msg.delete()
     db.session.commit()
     return build_api_response(HTTPStatus.OK)

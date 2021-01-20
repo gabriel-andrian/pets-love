@@ -19,40 +19,21 @@ def create_conversation():
     dog_id = request.json.get('dog_id')
     dog_to_data = request.json.get('dog_to')
 
-    found_dog = Dog.filter_by(id=dog_id, owner_id=owner_id)
+    found_dog = Dog.query.filter_by(id=dog_id, owner_id=owner_id).first()
     if not found_dog:
         return {"Not found": "dog_id is incorrect or does not belong to authenticated user."}, HTTPStatus.NOT_FOUND
 
-    dog_to = Dog.filter_by(id=dog_to_data)
-    if not found_dog:
+    dog_to = Dog.query.filter_by(id=dog_to_data).first()
+    if not dog_to:
         return {"Not found": "dog_to does not exist in database."}, HTTPStatus.NOT_FOUND
 
-    dogs = Dog.query.filter(Dog.id.in_([found_dog, dog_to])).all()
-
-    new_conversation = Conversation(dogs=dogs)
+    new_conversation = Conversation()
+    new_conversation.dogs.append(found_dog)
+    new_conversation.dogs.append(dog_to)
     db.session.add(new_conversation)
     db.session.commit()
 
     return {'data': ConversationSchema().dump(new_conversation)}, HTTPStatus.CREATED
-
-
-@bp_conversation.route('/<int:conv_id>', methods=['PUT'])
-@jwt_required
-def update_conversation(conv_id):
-    owner_id = get_jwt_identity()
-
-    found_dog = Dog.filter_by(id=dog_id, owner_id=owner_id)
-    if not found_dog:
-        return {"Not found": "dog_id is incorrect or dog does not belong to authenticated user."}, HTTPStatus.NOT_FOUND
-
-    msg = Message.query.filter_by(id=request.json.get('msg_id')).first()
-
-    conversation = Conversation.filter_by(id=conv_id).first()
-    conversation.messages.append(msg)
-
-    db.session.commit()
-
-    return build_api_response(HTTPStatus.OK)
 
 
 @bp_conversation.route('/', methods=['GET'])

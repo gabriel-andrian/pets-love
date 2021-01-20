@@ -66,39 +66,11 @@ Exemplos de commits:
     HEADER <Authorization>
     ```
 
-## Conversations
+## Conversations & Messages
 ### fluxo:
-- criar message --> pegar id
 - criar conversation --> pegar id
-- update conversation --> inserir id da message na conversation
+- criar message --> informar id da conversation
 
-### Messages:
-* New Message:
-    ```
-    POST /msg
-    HEADER <Authorization>
-
-    {
-        "dog_id": 0,
-        "message_text" = "Text"
-    }
-    ```
-* Get Message:
-    ```
-    GET /msg/<int:msg_id>
-    HEADER <Authorization>
-    ```
-
-* Delete Message:
-    ```
-    DELETE /msg/<int:msg_id>
-    HEADER <Authorization>
-
-    {
-        "dog_id": 0,
-        "msg_id": 0
-    }
-    ```
 ### Conversations:
 * New Conversation:
     ```
@@ -110,18 +82,6 @@ Exemplos de commits:
         "gog_to": 1, --> dog com quem se vai conversar
     }
     ```
-
-* Update Conversation:
-    ```
-    PUT /conversation/<int:conv_id>
-    HEADER <Authorization>
-
-    {
-        "dog_id": 0,
-        "msg_id": 0
-    }
-    ```
-
 * Get All Conversations (from one dog):
     ```
     GET /conversation/
@@ -141,6 +101,35 @@ Exemplos de commits:
         "dog_id": 0
     }
     ```
+### Messages:
+* New Message:
+    ```
+    POST /msg
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0,
+        "message_text" = "Text",
+        "conv_id": 0
+    }
+    ```
+* Get Message:
+    ```
+    GET /msg/<int:msg_id>
+    HEADER <Authorization>
+    ```
+
+* Delete Message:
+    ```
+    DELETE /msg/<int:msg_id>
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0,
+        "msg_id": 0
+    }
+    ```
+
 ### Breed
 
 * Listar todas as racas de caes:

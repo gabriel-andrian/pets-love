@@ -64,7 +64,8 @@ def login():
 
     access_token = create_access_token(
         identity=owner.id,
-        expires_delta=timedelta(days=10)
+        expires_delta=False
+        # expires_delta=timedelta(hours=240)
     )
 
     return {
