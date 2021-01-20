@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from http import HTTPStatus
 from app.models import db
-from app.models.photos_model import Photo
+from app.models.photos_model import Photo, PhotoSchema
 from app.models.dog_model import Dog
 from app.services.http import build_api_response
 from flask_jwt_extended import jwt_required
@@ -27,7 +27,7 @@ def create():
 
     db.session.add(photo)
     db.session.commit()
-    return build_api_response(HTTPStatus.CREATED)
+    return {"data": PhotoSchema().dump(photo)}, HTTPStatus.CREATED
 
 
 @bp_photo.route("/<photo_id>", methods=["DELETE"])

@@ -3,6 +3,8 @@ from app.models import db, ma, col
 from marshmallow import fields
 from datetime import datetime
 from app.models.breed_model import BreedSchema
+from app.models.photos_model import PhotoSchema
+from app.models.interest_model import InterestSchema
 
 dog_conversation = db.Table(
     'dog_conversation',
@@ -22,8 +24,8 @@ class Dog(db.Model):
     gender = db.Column(db.Boolean, nullable=False)
 
     breed = db.relationship("Breed", backref="dog")
-    # Relationship
-    # photos = db.relationship("DogPhoto", back_populates="dog")
+    photos = db.relationship("Photo", backref="dog")
+    interest = db.relationship("Interest", backref="dog")
 
     conversations = db.relationship('Conversation',
                                     secondary=dog_conversation,
@@ -68,6 +70,8 @@ class DogSchema(ma.SQLAlchemySchema):
     breed = fields.Nested(BreedSchema)
     gender = ma.auto_field()
     conversations = ma.auto_field()
+    photos = fields.Nested(PhotoSchema, many=True)
+    interest = fields.Nested(InterestSchema, many=True)
 
 
 class MessageSchema(ma.SQLAlchemySchema):
