@@ -10,7 +10,6 @@ from app.services.owner_services import owner_required
 from app.services.dog_auth import verify_auth
 
 
-
 bp_interest = Blueprint('api_interest', __name__, url_prefix='/interest')
 
 
@@ -22,7 +21,7 @@ def get_dog_id(interest_id: int):
 
     if not dog_verify:
         return build_api_response(HTTPStatus.UNAUTHORIZED)
-    
+
     dog = Interest.query.get(interest_id)
 
     if not dog:
