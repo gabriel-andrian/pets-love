@@ -64,4 +64,5 @@ def get_one_conversation(conv_id):
 
     data = Conversation.query.filter_by(id=conv_id).first(
     ) if conv_id else Conversation.query.filter_by(dog_id=found.id).all()
-    return {'data': ConversationSchema().dump(data) if conv_id else ConversationSchema(many=True).dump(data)}, HTTPStatus.FOUND
+    return {'data': ConversationSchema().dump(data) if conv_id else
+            ConversationSchema(many=True).dump(data)}, HTTPStatus.FOUND

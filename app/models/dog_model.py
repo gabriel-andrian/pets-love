@@ -26,7 +26,8 @@ class Dog(db.Model):
     # photos = db.relationship("DogPhoto", back_populates="dog")
 
     conversations = db.relationship('Conversation',
-                                    secondary=dog_conversation, back_populates='dogs')
+                                    secondary=dog_conversation,
+                                    back_populates='dogs')
 
     messages = db.relationship('Message', back_populates='dogs')
 
