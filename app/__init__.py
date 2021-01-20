@@ -12,6 +12,8 @@ from app.views.dog_views import bp_dogs
 from app.views.home import bp_home
 from app.views.breed_views import bp_breed
 from app.views.authorization_view import bp_authorization
+from app.views.message_view import bp_message
+from app.views.conversation_view import bp_conversation
 from app.views.like_views import bp_like
 
 
@@ -26,6 +28,7 @@ def create_app():
         "SQLALCHEMY_TRACK_MODIFICATIONS")
     app.config["SQLALCHEMY_DATABASE_URI"] = env.str("SQLALCHEMY_DATABASE_URI")
     app.config['JWT_SECRET_KEY'] = token_hex(16)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 
     JWTManager(app)
 
@@ -40,6 +43,8 @@ def create_app():
     app.register_blueprint(bp_breed)
 
     app.register_blueprint(bp_authorization)
+    app.register_blueprint(bp_message)
+    app.register_blueprint(bp_conversation)
 
     app.register_blueprint(bp_like)
     app.register_blueprint(bp_photo)

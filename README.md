@@ -60,11 +60,80 @@ Exemplos de commits:
     }
     ```
 
+* Has Like (?):
+    ```
+    GET /like/dog/<dog_id>/has_like_with/<other_dog_id>
+    HEADER <Authorization>
+    ```
+
+## Conversations & Messages
+### fluxo:
+- criar conversation --> pegar id
+- criar message --> informar id da conversation
+
+### Conversations:
+* New Conversation:
+    ```
+    POST /conversation
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0, --> dog que inicia a conversa
+        "gog_to": 1, --> dog com quem se vai conversar
+    }
+    ```
+* Get All Conversations (from one dog):
+    ```
+    GET /conversation/
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0
+    }
+    ```
+
+* Get One Conversation (from one dog):
+    ```
+    GET /conversation/<int:conv_id>
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0
+    }
+    ```
+### Messages:
+* New Message:
+    ```
+    POST /msg
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0,
+        "message_text" = "Text",
+        "conv_id": 0
+    }
+    ```
+* Get Message:
+    ```
+    GET /msg/<int:msg_id>
+    HEADER <Authorization>
+    ```
+
+* Delete Message:
+    ```
+    DELETE /msg/<int:msg_id>
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0,
+    }
+    ```
+
 ### Breed
 
-    * Listar todas as racas de caes:
-        ```
-        GET /breed
-        HEADER <Authorization>
+* Listar todas as racas de caes:
+    ```
+    GET /breed
+    HEADER <Authorization>
 
-        ```
+    ```
