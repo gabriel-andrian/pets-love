@@ -16,16 +16,12 @@ def owner_required(function):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
 
-        owner_id_jwt = get_jwt_identity()
+        owner_id = get_jwt_identity()
 
         data = request.get_json()
 
         found_dog = Dog.query.get(data["dog_id"])
-
-        if not found_dog:
-            return build_api_response(HTTPStatus.UNAUTHORIZED)
-
-        if found_dog.owner_id == owner_id_jwt:
+        if found_dog.owner_id == owner_id:
             return function(*args, **kwargs)
 
         return build_api_response(HTTPStatus.UNAUTHORIZED)
