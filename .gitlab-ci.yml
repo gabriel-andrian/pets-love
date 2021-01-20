@@ -1,0 +1,8 @@
+image: node:14.12.0
+
+Test:
+  stage: test
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest

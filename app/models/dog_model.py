@@ -48,9 +48,8 @@ class Message(db.Model):
     message = col(db.Text, nullable=False)
     ts = col(db.DateTime, default=datetime.utcnow)
     dog_id = col(db.Integer, db.ForeignKey('dog.id'), nullable=False)
-    dog_to = col(db.Integer, db.ForeignKey('dog.id'), nullable=False)
     conversation_id = col(db.Integer, db.ForeignKey(
-        'conversation.id'), nullable=False)
+        'conversation.id'))
 
     conversations = db.relationship('Conversation', back_populates='messages')
     dogs = db.relationship('Dog', back_populates='messages')
@@ -67,15 +66,6 @@ class MessageSchema(ma.SQLAlchemySchema):
     conversation_id = ma.auto_field()
 
 
-class ConversationSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Conversation
-
-    id = ma.auto_field()
-    time_started = ma.auto_field()
-    messages = fields.Nested(MessageSchema, many=True)
-
-
 class DogSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Dog
@@ -84,6 +74,16 @@ class DogSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     details = ma.auto_field()
     owner_id = ma.auto_field()
-    breed_id = fields.Nested(BreedSchema)
+    breed_id = fields.Nested('BreedSchema')
     gender = ma.auto_field()
-    conversations = fields.Nested(ConversationSchema, many=True)
+    conversations = ma.auto_field()
+
+
+class ConversationSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Conversation
+
+    id = ma.auto_field()
+    time_started = ma.auto_field()
+    messages = ma.auto_field()
+    dogs = ma.auto_field()

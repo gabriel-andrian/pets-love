@@ -8,11 +8,7 @@ from app.services.http import build_api_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
-<<<<<<< HEAD
-bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dogs")
-=======
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dog")
->>>>>>> e235ee21c7836bed8ab44690cdce1dcb5d618e07
 
 dog_schema = DogSchema()
 dogs_schema = DogSchema(many=True)
@@ -48,11 +44,7 @@ def list_all():
     return {'data': dogs_schema.dump(dogs)}, HTTPStatus.OK
 
 
-<<<<<<< HEAD
-@ bp_dogs.route('/<int:dog_id>')
-=======
 @ bp_dogs.route('/<int:dog_id>', methods=['GET'])
->>>>>>> e235ee21c7836bed8ab44690cdce1dcb5d618e07
 @jwt_required
 def get(dog_id: int):
     owner_id = get_jwt_identity()

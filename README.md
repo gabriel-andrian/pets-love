@@ -66,42 +66,86 @@ Exemplos de commits:
     HEADER <Authorization>
     ```
 
-### Conversation
+## Conversations
+### fluxo:
+- criar message --> pegar id
+- criar conversation --> pegar id
+- update conversation --> inserir id da message na conversation
 
+### Messages:
 * New Message:
     ```
-    POST /conversation/<int:conv_id>/msg
+    POST /msg
     HEADER <Authorization>
+
     {
         "dog_id": 0,
         "message_text" = "Text"
     }
     ```
+* Get Message:
+    ```
+    GET /msg/<int:msg_id>
+    HEADER <Authorization>
+    ```
 
 * Delete Message:
     ```
-    DELETE /conversation/msg
+    DELETE /msg/<int:msg_id>
     HEADER <Authorization>
+
     {
         "dog_id": 0,
         "msg_id": 0
     }
     ```
-
+### Conversations:
 * New Conversation:
     ```
     POST /conversation
     HEADER <Authorization>
+
+    {
+        "dog_id": 0, --> dog que inicia a conversa
+        "gog_to": 1, --> dog com quem se vai conversar
+    }
+    ```
+
+* Update Conversation:
+    ```
+    PUT /conversation/<int:conv_id>
+    HEADER <Authorization>
+
     {
         "dog_id": 0,
         "msg_id": 0
     }
     ```
+
+* Get All Conversations (from one dog):
+    ```
+    GET /conversation/
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0
+    }
+    ```
+
+* Get One Conversation (from one dog):
+    ```
+    GET /conversation/<int:conv_id>
+    HEADER <Authorization>
+
+    {
+        "dog_id": 0
+    }
+    ```
 ### Breed
 
-    * Listar todas as racas de caes:
-        ```
-        GET /breed
-        HEADER <Authorization>
+* Listar todas as racas de caes:
+    ```
+    GET /breed
+    HEADER <Authorization>
 
-        ```
+    ```
