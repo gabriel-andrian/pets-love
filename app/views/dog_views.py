@@ -6,7 +6,6 @@ from app.models.dog_model import Dog, DogSchema
 from app.models.like_model import Like
 from app.services.http import build_api_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.http import build_api_response
 from app.services.dog_auth import verify_auth
 
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dog")
@@ -62,7 +61,6 @@ def get(dog_id: int):
 @bp_dogs.route("/<int:dog_id>", methods=["PATCH"])
 @jwt_required
 def update(dog_id: int):
-    owner_id = get_jwt_identity()
     data = request.get_json()
     dog = verify_auth(dog_id)
 
