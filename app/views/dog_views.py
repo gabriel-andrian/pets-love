@@ -5,8 +5,7 @@ from app.models import db
 from app.models.dog_model import Dog, DogSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.http import build_api_response
-from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from app.services.dog_auth import verify_auth
 
 bp_dogs = Blueprint("api_dogs", __name__, url_prefix="/dog")
 
@@ -19,7 +18,10 @@ dogs_schema = DogSchema(many=True)
 def create():
     owner_id = get_jwt_identity()
     data = request.get_json()
-    owner_id = get_jwt_identity()
+    current_owner = get_jwt_identity()
+
+    if current_owner is not data['owner_id']:
+        return build_api_response(HTTPStatus.UNAUTHORIZED)
 
     dog = Dog(
         name=data['name'],
@@ -47,8 +49,10 @@ def list_all():
 @ bp_dogs.route('/<int:dog_id>', methods=['GET'])
 @jwt_required
 def get(dog_id: int):
-    owner_id = get_jwt_identity()
-    dog = Dog.query.get_or_404(dog_id).filter_by(owner_id=owner_id).first()
+    dog = Dog.query.get(dog_id)
+
+    if not dog:
+        return build_api_response(HTTPStatus.NOT_FOUND)
 
     return {'data': dog_schema.dump(dog)}, HTTPStatus.OK
 
@@ -58,7 +62,10 @@ def get(dog_id: int):
 def update(dog_id: int):
     owner_id = get_jwt_identity()
     data = request.get_json()
-    dog = Dog.query.get_or_404(dog_id).filter_by(owner_id=owner_id).first()
+    dog = verify_auth(dog_id)
+
+    if not dog:
+        return build_api_response(HTTPStatus.UNAUTHORIZED)
 
     dog.name = data['name'] if data.get('name') else dog.name
     dog.details = data['details'] if data.get('details') else dog.details
@@ -73,13 +80,15 @@ def update(dog_id: int):
 @bp_dogs.route("/<int:dog_id>", methods=["DELETE"])
 @jwt_required
 def delete(dog_id: int):
-    owner_id = get_jwt_identity()
-    dog = Dog.query.get_or_404(dog_id).filter_by(owner_id=owner_id).first()
+    dog = verify_auth(dog_id)
+
+    if not dog:
+        return build_api_response(HTTPStatus.UNAUTHORIZED)
 
     dog.delete()
     db.session.commit()
 
-    return {"msg": f'Dog com id {dog_id} deletado'}, HTTPStatus.OK
+    return build_api_response(HTTPStatus.OK)
 
 
 @ bp_dogs.route('/matches', methods=['GET'])

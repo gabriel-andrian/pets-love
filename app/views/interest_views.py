@@ -1,30 +1,39 @@
 from flask import Blueprint, request
 from http import HTTPStatus
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import IntegrityError
 
 from app.models import db
 from app.services.http import build_api_response
 from app.models.interest_model import Interest, InterestSchema
+from app.services.owner_required import owner_required
 
 
 bp_interest = Blueprint('api_interest', __name__, url_prefix='/interest')
 
 
 @bp_interest.route('/<int:interest_id>', methods=['GET'])
+@jwt_required
 def get_dog_id(interest_id: int):
 
-    dog_interest = Interest.query.get_or_404(interest_id)
+    dog = Interest.query.get(interest_id)
 
-    return {'data': InterestSchema().dump(dog_interest)}, HTTPStatus.OK
+    if not dog:
+        return build_api_response(HTTPStatus.NOT_FOUND)
+
+    return {'data': InterestSchema().dump(dog)}, HTTPStatus.OK
 
 
 @bp_interest.route('/', methods=['POST'])
-def create():
+@owner_required
+def created_new_interest():
+
     data = request.get_json()
 
     interest = Interest(
         dog_id=data["dog_id"],
-        breed_id=data["breed_id"]
+        breed_id=data["breed_id"],
+        gender_interest=data["gender_interest"]
     )
 
     try:
@@ -36,15 +45,20 @@ def create():
 
 
 @bp_interest.route('/<int:interest_id>', methods=['PATCH'])
-def update(interest_id: int):
+@jwt_required
+def update_interest(interest_id: int):
 
     data = request.get_json()
 
-    interest = Interest.query.get_or_404(interest_id)
+    dog = Interest.query.get_or_404(interest_id)
 
-    interest.dog_id = data['dog_id'] if data.get('dog_id') else interest.dog_id
-    interest.breed_id = data['breed_id'] if data.get(
-        'breed_id') else interest.breed_id
+    dog.breed_id = data['breed_id'] if data.get(
+        'breed_id') else dog.breed_id
+    dog.gender_interest = data['gender_interest'] if data.get(
+        'gender_interest') else dog.gender_interest
 
-    db.session.commit()
-    return build_api_response(HTTPStatus.CREATED)
+    try:
+        db.session.commit()
+        return build_api_response(HTTPStatus.CREATED)
+    except IntegrityError:
+        return build_api_response(HTTPStatus.NOT_FOUND)
