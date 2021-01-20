@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.services.http import build_api_response
 from app.models.interest_model import Interest, InterestSchema
-from app.services.owner_required import owner_required
+from app.services.owner_services import owner_required
 
 
 bp_interest = Blueprint('api_interest', __name__, url_prefix='/interest')
