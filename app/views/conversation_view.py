@@ -46,7 +46,8 @@ def get_all_conversations():
     if not found:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
-    data = Conversation.query.filter_by(dog_id=found.id)
+    data = Conversation.query.filter(
+        Conversation.dogs.any(id=dog_id)).all()
 
     return {'data': ConversationSchema(many=True).dump(data)}, HTTPStatus.FOUND
 

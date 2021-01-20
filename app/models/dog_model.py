@@ -37,7 +37,7 @@ class Dog(db.Model):
 class Conversation(db.Model):
     __tablename__ = 'conversation'
     id = col(db.Integer, primary_key=True)
-    time_started = col(db.Time, default=datetime.utcnow)
+    time_started = col(db.DateTime, default=datetime.utcnow)
     messages = db.relationship('Message', back_populates='conversations')
     dogs = db.relationship('Dog', secondary=dog_conversation,
                            back_populates='conversations')

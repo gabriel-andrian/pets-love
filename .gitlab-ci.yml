@@ -1,4 +1,4 @@
-image: node:14.12.0
+image: python:3.9.0
 
 Test:
   stage: test

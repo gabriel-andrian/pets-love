@@ -126,7 +126,6 @@ Exemplos de commits:
 
     {
         "dog_id": 0,
-        "msg_id": 0
     }
     ```
 
