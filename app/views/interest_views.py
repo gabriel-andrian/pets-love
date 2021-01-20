@@ -62,6 +62,6 @@ def update_interest(interest_id: int):
         
     try:
         db.session.commit()
-        return build_api_response(HTTPStatus.CREATED)
+        return build_api_response(HTTPStatus.OK)
     except IntegrityError:
         return build_api_response(HTTPStatus.NOT_FOUND)
