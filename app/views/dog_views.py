@@ -3,6 +3,7 @@ from http import HTTPStatus
 from sqlalchemy.exc import IntegrityError
 from app.models import db
 from app.models.dog_model import Dog, DogSchema
+from app.models.like_model import Like
 from app.services.http import build_api_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.dog_auth import verify_auth
@@ -88,6 +89,20 @@ def delete(dog_id: int):
     return build_api_response(HTTPStatus.OK)
 
 
-@ bp_dogs.route('/matches', methods=['GET'])
-def get_matches():
-    ...
+@bp_dogs.route('/<int:dog_id>/matches', methods=['GET'])
+@jwt_required
+def get_matches(dog_id: int):
+    owner_id = get_jwt_identity()
+
+    found_dog = Dog.query.get(dog_id)
+
+    if not found_dog.owner_id or found_dog.owner_id != owner_id:
+        return build_api_response(HTTPStatus.NOT_FOUND)
+
+    likes = Like.query.filter_by(dog_id_give=found_dog.id, match=True).all()
+
+    dogs = []
+    for like in likes:
+        dogs.append(Dog.query.get(like.dog_id_receive))
+
+    return {'data': DogSchema(many=True).dump(dogs)}, HTTPStatus.OK
