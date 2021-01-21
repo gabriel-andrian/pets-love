@@ -9,9 +9,9 @@ from app.models.interest_model import InterestSchema
 dog_conversation = db.Table(
     'dog_conversation',
     col('dog_id', db.Integer, db.ForeignKey(
-        'dog.id')),
+        'dog.id', ondelete="CASCADE")),
     col('conversation_id', db.Integer, db.ForeignKey(
-        'conversation.id'))
+        'conversation.id', ondelete="CASCADE"))
 )
 
 
@@ -23,15 +23,21 @@ class Dog(db.Model):
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
 
-    breed = db.relationship("Breed", backref="dog")
-    photos = db.relationship("Photo", backref="dog")
-    interest = db.relationship("Interest", backref="dog")
+    breed = db.relationship("Breed", backref="dog",
+                            cascade="all, delete")
+    photos = db.relationship("Photo", backref="dog",
+                             cascade="all, delete", passive_deletes=True)
+    interest = db.relationship(
+        "Interest", backref="dog", cascade="all, delete")
 
     conversations = db.relationship('Conversation',
                                     secondary=dog_conversation,
-                                    back_populates='dogs')
+                                    back_populates='dogs',
+                                    cascade="all, delete")
 
-    messages = db.relationship('Message', back_populates='dogs')
+    messages = db.relationship(
+        'Message', back_populates='dogs', cascade="all, delete",
+        passive_deletes=True)
 
     def __repr__(self):
         return f"<Dog {self.name} />"
@@ -43,7 +49,8 @@ class Conversation(db.Model):
     time_started = col(db.DateTime, default=datetime.utcnow)
     messages = db.relationship('Message', back_populates='conversations')
     dogs = db.relationship('Dog', secondary=dog_conversation,
-                           back_populates='conversations')
+                           back_populates='conversations',
+                           passive_deletes=True)
 
 
 class Message(db.Model):
@@ -51,27 +58,13 @@ class Message(db.Model):
     id = col(db.Integer, primary_key=True)
     message = col(db.Text, nullable=False)
     ts = col(db.DateTime, default=datetime.utcnow)
-    dog_id = col(db.Integer, db.ForeignKey('dog.id'), nullable=False)
+    dog_id = col(db.Integer, db.ForeignKey(
+        'dog.id', ondelete="CASCADE"), nullable=False)
     conversation_id = col(db.Integer, db.ForeignKey(
         'conversation.id'))
 
     conversations = db.relationship('Conversation', back_populates='messages')
     dogs = db.relationship('Dog', back_populates='messages')
-
-
-class DogSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Dog
-
-    id = ma.auto_field()
-    name = ma.auto_field()
-    details = ma.auto_field()
-    owner_id = ma.auto_field()
-    breed = fields.Nested(BreedSchema)
-    gender = ma.auto_field()
-    conversations = ma.auto_field()
-    photos = fields.Nested(PhotoSchema, many=True)
-    interest = fields.Nested(InterestSchema, many=True)
 
 
 class MessageSchema(ma.SQLAlchemySchema):
@@ -92,5 +85,19 @@ class ConversationSchema(ma.SQLAlchemySchema):
     id = ma.auto_field()
     time_started = ma.auto_field()
     messages = fields.Nested(MessageSchema, many=True)
-    # messages = ma.auto_field()
     dogs = ma.auto_field()
+
+
+class DogSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Dog
+
+    id = ma.auto_field()
+    name = ma.auto_field()
+    details = ma.auto_field()
+    owner_id = ma.auto_field()
+    breed = fields.Nested(BreedSchema)
+    gender = ma.auto_field()
+    conversations = fields.Nested(ConversationSchema, many=True)
+    photos = fields.Nested(PhotoSchema, many=True)
+    interest = fields.Nested(InterestSchema, many=True)

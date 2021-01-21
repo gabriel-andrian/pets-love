@@ -4,9 +4,9 @@ from app.models import db, ma
 class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dog_id_give = db.Column(
-        db.Integer, db.ForeignKey("dog.id"), nullable=False)
+        db.Integer, db.ForeignKey("dog.id", ondelete="CASCADE"), nullable=False)
     dog_id_receive = db.Column(
-        db.Integer, db.ForeignKey("dog.id"), nullable=False)
+        db.Integer, db.ForeignKey("dog.id", ondelete="CASCADE"), nullable=False)
     dislike = db.Column(db.Boolean, nullable=False)
     match = db.Column(db.Boolean, default=False)
 

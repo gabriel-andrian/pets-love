@@ -86,7 +86,6 @@ def delete(dog_id: int):
 
     Dog.query.filter_by(id=dog.id).delete()
     db.session.commit()
-
     return build_api_response(HTTPStatus.OK)
 
 
