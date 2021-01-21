@@ -13,5 +13,5 @@ def test_schema_serialize_like():
     like_schema = LikeSchema().dump(like)
 
     for key in new_like.keys():
-        if key == 'dislike':
+        if key != 'dislike':
             assert like_schema[key] == new_like[key]
