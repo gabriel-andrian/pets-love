@@ -8,14 +8,13 @@ from app.models import db
 from app.models.dog_model import Dog, Message, MessageSchema
 
 bp_message = Blueprint(
-    'bp_message', __name__, url_prefix='/msg')
+    'bp_message', __name__)
 
 
-@bp_message.route('/', methods=['POST'])
+@bp_message.route('/dog/<int:dog_id>/msg', methods=['POST'])
 @jwt_required
-def create_msg():
+def create_msg(dog_id):
     owner_id = get_jwt_identity()
-    dog_id = request.json.get('dog_id')
     conv_id = request.json.get('conv_id')
     message_text = request.json.get('message_text')
 
@@ -35,22 +34,25 @@ def create_msg():
     return {'data': MessageSchema().dump(msg)}, HTTPStatus.CREATED
 
 
-@bp_message.route('/<int:msg_id>', methods=['GET'])
+@bp_message.route('/dog/<int:dog_id>/msg/<int:msg_id>', methods=['GET'])
 @jwt_required
-def get_one_msg(msg_id):
+def get_one_msg(dog_id, msg_id):
+    owner_id = get_jwt_identity()
+    dog = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
+    if not dog:
+        return build_api_response(HTTPStatus.NOT_FOUND)
 
-    data = Message.query.filter_by(id=msg_id).first()
+    data = Message.query.filter_by(dog_id=dog_id, id=msg_id).first()
     if not data:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
     return {"data": MessageSchema().dump(data)}, HTTPStatus.OK
 
 
-@bp_message.route('/<int:msg_id>', methods=['DELETE'])
+@bp_message.route('/dog/<int:dog_id>/msg/<int:msg_id>', methods=['DELETE'])
 @jwt_required
-def delete_msg(msg_id):
+def delete_msg(dog_id, msg_id):
     owner_id = get_jwt_identity()
-    dog_id = request.json.get('dog_id')
     dog = Dog.query.filter_by(owner_id=owner_id, id=dog_id).first()
     if not dog:
         return {"dog": build_api_response(HTTPStatus.NOT_FOUND)}
