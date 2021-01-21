@@ -27,18 +27,3 @@ def owner_required(function):
         return build_api_response(HTTPStatus.UNAUTHORIZED)
 
     return wrapper
-
-
-def delete_all_owner_relationships(owner_id: int):
-    dogs_query = Dog.query.filter_by(owner_id=owner_id)
-
-    for dog in dogs_query.all():
-        Interest.query.filter_by(dog_id=dog.id).delete()
-
-        Like.query.filter_by(dog_id_give=dog.id).delete()
-        Like.query.filter_by(dog_id_receive=dog.id).delete()
-
-        Photo.query.filter_by(dog_account_id=dog.id).delete()
-
-    dogs_query.delete()
-    Owner.query.filter_by(id=owner_id).delete()

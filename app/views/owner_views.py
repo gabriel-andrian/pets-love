@@ -3,7 +3,6 @@ from app.models import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 from app.services.http import build_api_response
-from app.services.owner_services import delete_all_owner_relationships
 
 from app.models.owner_model import Owner, OwnerSchema
 
@@ -37,8 +36,7 @@ def delete():
     owner_id = get_jwt_identity()
 
     Owner.query.get_or_404(owner_id)
-
-    delete_all_owner_relationships(owner_id)
+    Owner.query.filter_by(id=owner_id).delete()
 
     db.session.commit()
     return build_api_response(HTTPStatus.OK)
