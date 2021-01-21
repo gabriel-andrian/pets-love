@@ -19,7 +19,8 @@ class Dog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     details = db.Column(db.String(300), nullable=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey(
+        'owner.id', ondelete="CASCADE"))
     breed_id = db.Column(db.Integer, db.ForeignKey('breed.id'))
     gender = db.Column(db.Boolean, nullable=False)
 

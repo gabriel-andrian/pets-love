@@ -11,7 +11,8 @@ class Owner(db.Model):
     address = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
 
-    dogs = db.relationship("Dog", backref="owner")
+    dogs = db.relationship("Dog", backref="owner",
+                           cascade="all, delete", passive_deletes=True)
 
     def __repr__(self):
         return f"<Owner {self.name} {self.surname} />"
