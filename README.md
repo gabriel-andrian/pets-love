@@ -25,8 +25,29 @@ Exemplos de commits:
 
 ### _Owner_
 
-- Update:
+- Login:
+  ```
+  POST /auth/login
 
+  {
+      "email": "",
+      "password": ""
+  }
+  ```
+- Create:
+  ```
+  POST /auth/signup
+
+  {
+      "name": "",
+      "surname": "",
+      "document": "",
+      "email": "",
+      "address": "",
+      "password": ""
+  }
+  ```
+- Update:
   ```
   PATCH /owner/
   HEADER <Authorization>
@@ -40,7 +61,6 @@ Exemplos de commits:
   }
   # Pode-se atualizar qualquer atributo do owner (um atributo ou mais) deixando-os explícitos no corpo da requisição
   ```
-
 - Delete:
   ```
   DELETE /owner/
