@@ -10,7 +10,7 @@ def build_response_message(http_status):
         HTTPStatus.BAD_REQUEST: 'Bad Request',
         HTTPStatus.CREATED: 'Created',
         HTTPStatus.NOT_FOUND: 'Not Found',
-        HTTPStatus.OK: 'These Requisition was Successful',
+        HTTPStatus.OK: 'Successful Requisition',
         HTTPStatus.UNAUTHORIZED: 'Unauthorized',
         HTTPStatus.FORBIDDEN: 'Forbidden'
     }

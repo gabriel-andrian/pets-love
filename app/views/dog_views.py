@@ -81,11 +81,10 @@ def update(dog_id: int):
 @jwt_required
 def delete(dog_id: int):
     dog = verify_auth(dog_id)
-    Dog.query.get_or_404(dog_id)
     if not dog:
         return build_api_response(HTTPStatus.UNAUTHORIZED)
 
-    Dog.query.filter_by(id=dog_id).delete()
+    Dog.query.filter_by(id=dog.id).delete()
     db.session.commit()
     return build_api_response(HTTPStatus.OK)
 

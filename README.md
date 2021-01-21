@@ -184,11 +184,10 @@ Exemplos de commits:
 - New Conversation:
 
   ```
-  POST /conversation
+  POST /dog/<dog_id>/conversation
   HEADER <Authorization>
 
   {
-      "dog_id": 0, --> dog que inicia a conversa
       "gog_to": 1, --> dog com quem se vai conversar
   }
   ```
@@ -196,56 +195,40 @@ Exemplos de commits:
 - Get All Conversations (from one dog):
 
   ```
-  GET /conversation/
+  GET /dog/<dog_id>/conversation
   HEADER <Authorization>
-
-  {
-      "dog_id": 0
-  }
   ```
 
 - Get One Conversation (from one dog):
 
   ```
-  GET /conversation/<int:conv_id>
+  GET dog/<dog_id>/conversation/<conv_id>
   HEADER <Authorization>
-
-  {
-      "dog_id": 0
-  }
   ```
 
 ### Messages:
 
 - New Message:
-
   ```
-  POST /msg
+  POST /dog/<dog_id>/msg
   HEADER <Authorization>
 
   {
-      "dog_id": 0,
       "message_text" = "Text",
       "conv_id": 0
   }
   ```
 
 - Get Message:
-
   ```
-  GET /msg/<int:msg_id>
+  GET /dog/<dog_id>/msg/<msg_id>
   HEADER <Authorization>
   ```
 
 - Delete Message:
-
   ```
-  DELETE /msg/<int:msg_id>
+  DELETE /dog/<dog_id>/msg/<msg_id>
   HEADER <Authorization>
-
-  {
-      "dog_id": 0,
-  }
   ```
 
 ## Detalhes dos Cãezinhos
@@ -271,20 +254,20 @@ Exemplos de commits:
 - Adicionar uma raça e genero de interesse do seu Dog
 
   ```
-  POST /interest/
+  POST /interest/<dog_id>
   HEADER <Authorization>
   ```
 
 - Listar o interesse do Dog selecionado
 
   ```
-  GET /interest/<int: dog_id>
+  GET /interest/<dog_id>
   HEADER <Authorization>
   ```
 
 - Editar a raça e genero de interesse do seu Dog
 
   ```
-  PATCH /interest/<int: dog_id>
+  PATCH /interest/<dog_id>
   HEADER <Authorization>
   ```

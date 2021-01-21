@@ -13,21 +13,21 @@ from app.services.dog_auth import verify_auth
 bp_interest = Blueprint('api_interest', __name__, url_prefix='/interest')
 
 
-@bp_interest.route('/<int:interest_id>', methods=['GET'])
+@bp_interest.route('/<int:dog_id>', methods=['GET'])
 @jwt_required
-def get_dog_id(interest_id: int):
+def get_interests(dog_id: int):
 
-    dog_verify = verify_auth(interest_id)
+    dog_verify = verify_auth(dog_id)
 
     if not dog_verify:
         return build_api_response(HTTPStatus.UNAUTHORIZED)
 
-    dog = Interest.query.get(interest_id)
+    interest = Interest.query.filter_by(dog_id=dog_id).first()
 
-    if not dog:
+    if not interest:
         return build_api_response(HTTPStatus.NOT_FOUND)
 
-    return {'data': InterestSchema().dump(dog)}, HTTPStatus.OK
+    return {'data': InterestSchema().dump(interest)}, HTTPStatus.OK
 
 
 @bp_interest.route('/', methods=['POST'])
@@ -50,18 +50,18 @@ def created_new_interest():
         return build_api_response(HTTPStatus.BAD_REQUEST)
 
 
-@bp_interest.route('/<int:interest_id>', methods=['PATCH'])
+@bp_interest.route('/<int:dog_id>', methods=['PATCH'])
 @jwt_required
-def update_interest(interest_id: int):
+def update_interest(dog_id: int):
 
-    dog_verify = verify_auth(interest_id)
+    dog_verify = verify_auth(dog_id)
 
     if not dog_verify:
         return build_api_response(HTTPStatus.UNAUTHORIZED)
 
     data = request.get_json()
 
-    dog = Interest.query.get_or_404(interest_id)
+    dog = Interest.query.filter_by(dog_id=dog_id)
 
     if not dog:
         return build_api_response(HTTPStatus.NOT_FOUND)
