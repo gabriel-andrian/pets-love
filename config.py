@@ -9,8 +9,7 @@ class Config:
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = token_hex(32)
-    SECRET_KEY = token_hex(32)
+    JWT_SECRET_KEY = token_hex(16)
     JWT_ACCESS_TOKEN_EXPIRES = False
 
 
