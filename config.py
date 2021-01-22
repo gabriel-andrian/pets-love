@@ -24,3 +24,4 @@ class ProductionConfig(Config):
     ENV = 'production'
     DATABASE_URL = env.str('DATABASE_URL')
     BREEDS_CSV = env.str('BREEDS_CSV')
+    SQLALCHEMY_DATABASE_URI = env.str('DATABASE_URL')
