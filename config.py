@@ -15,8 +15,9 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = env.str('SQLALCHEMY_DATABASE_URI')
+    DATABASE_URL = 'postgresql://postgres:12345678@localhost/capstone_q3'
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:12345678@localhost/capstone_q3'
 
 
 class ProductionConfig(Config):
