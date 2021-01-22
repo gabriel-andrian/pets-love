@@ -1,5 +1,5 @@
 from environs import Env
-from secrets import token_hex
+# from secrets import token_hex
 
 env = Env()
 env.read_env()
@@ -9,8 +9,8 @@ class Config:
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = token_hex(16)
-    JWT_ACCESS_TOKEN_EXPIRES = False
+    # JWT_SECRET_KEY = token_hex(16)
+    # JWT_ACCESS_TOKEN_EXPIRES = False
 
 
 class DevelopmentConfig(Config):

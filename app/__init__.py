@@ -3,7 +3,7 @@ from app.views.photo_view import bp_photo
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from app.models import db, ma, mg
-
+from secrets import token_hex
 from app.views.owner_views import bp_owner
 from app.views.dog_views import bp_dogs
 
@@ -25,7 +25,8 @@ def create_app(config='production'):
 
     app = Flask(__name__)
     app.config.from_object(f'config.{configs[config]}')
-
+    app.config['JWT_SECRET_KEY'] = token_hex(16)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
     JWTManager(app)
 
     db.init_app(app)
